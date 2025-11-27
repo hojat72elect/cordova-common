@@ -31,7 +31,8 @@
     "jasmine": "^5.9.0",
     "jasmine-spec-reporter": "^7.0.0",
     "rewire": "^9.0.0",
-    "tmp": "^0.2.3"
+    "tmp": "^0.2.3",
+    "typescript": "^5.3.3"
   },
   "c8": {
     "all": true,
