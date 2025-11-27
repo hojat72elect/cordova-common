@@ -1,21 +1,21 @@
 /**
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
-*/
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ */
 
 const CordovaError = require('../src/CordovaError');
 const CordovaLogger = require('../src/CordovaLogger');
@@ -86,8 +86,12 @@ describe('CordovaLogger class', function () {
 
         describe('subscribe method', function () {
             it('Test 008 : should throw if called without EventEmitter instance', function () {
-                expect(function () { logger.subscribe(); }).toThrow();
-                expect(function () { logger.subscribe(123); }).toThrow();
+                expect(function () {
+                    logger.subscribe();
+                }).toThrow();
+                expect(function () {
+                    logger.subscribe(123);
+                }).toThrow();
             });
 
             it('Test 009 : should attach corresponding listeners to supplied emitter', function () {
@@ -108,12 +112,14 @@ describe('CordovaLogger class', function () {
         });
 
         describe('log method', function () {
-            function CursorSpy (name) {
+            function CursorSpy(name) {
                 const cursorMethods = ['reset', 'write', 'bold'];
                 const spy = jasmine.createSpyObj(name, cursorMethods);
 
                 // Make spy methods chainable, as original Cursor acts
-                cursorMethods.forEach(function (method) { spy[method].and.returnValue(spy); });
+                cursorMethods.forEach(function (method) {
+                    spy[method].and.returnValue(spy);
+                });
 
                 spy.fg = jasmine.createSpyObj('fg', ['grey', 'yellow', 'blue', 'red']);
 
@@ -165,19 +171,19 @@ describe('CordovaLogger class', function () {
                 };
 
                 resetLogLevel();
-                expect(logger.adjustLevel({ verbose: true }).logLevel).toEqual('verbose');
+                expect(logger.adjustLevel({verbose: true}).logLevel).toEqual('verbose');
 
                 resetLogLevel();
                 expect(logger.adjustLevel(['--verbose']).logLevel).toEqual('verbose');
 
                 resetLogLevel();
-                expect(logger.adjustLevel({ silent: true }).logLevel).toEqual('error');
+                expect(logger.adjustLevel({silent: true}).logLevel).toEqual('error');
 
                 resetLogLevel();
                 expect(logger.adjustLevel(['--silent']).logLevel).toEqual('error');
 
                 resetLogLevel();
-                expect(logger.adjustLevel({ verbose: true, silent: true }).logLevel).toEqual('verbose');
+                expect(logger.adjustLevel({verbose: true, silent: true}).logLevel).toEqual('verbose');
 
                 resetLogLevel();
                 expect(logger.adjustLevel(['--verbose', '--silent']).logLevel).toEqual('verbose');

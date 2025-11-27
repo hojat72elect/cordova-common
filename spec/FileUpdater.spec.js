@@ -1,23 +1,23 @@
 /**
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
-*/
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ */
 
-const { Stats } = require('node:fs');
+const {Stats} = require('node:fs');
 const path = require('node:path');
 const rewire = require('rewire');
 
@@ -38,7 +38,7 @@ FileUpdater.__set__('updatePathWithStats', function () {
 });
 
 // Create mock fs.Stats to simulate file or directory attributes.
-function mockFileStats (modified) {
+function mockFileStats(modified) {
     return {
         __proto__: Stats.prototype,
         dev: 0,
@@ -57,7 +57,8 @@ function mockFileStats (modified) {
         birthtime: null
     };
 }
-function mockDirStats () {
+
+function mockDirStats() {
     return {
         __proto__: Stats.prototype,
         dev: 0,
@@ -78,7 +79,7 @@ function mockDirStats () {
 }
 
 class SystemError extends Error {
-    constructor (code, message) {
+    constructor(code, message) {
         super(`${code}: ${message}`);
         this.name = 'SystemError';
         this.code = code;
@@ -118,7 +119,7 @@ const mockFs = {
         return result;
     },
 
-    lstatSync (fileOrDirPath) {
+    lstatSync(fileOrDirPath) {
         return this.statSync(fileOrDirPath);
     },
 
@@ -134,7 +135,7 @@ const mockFs = {
         this.rmPaths.push(path);
     },
 
-    _getEntry (map, p) {
+    _getEntry(map, p) {
         // Try a few variants of path. Hackety hack...
         return map[p] || map[path.resolve(p)] || map[path.relative(process.cwd(), p)];
     }
@@ -226,7 +227,7 @@ describe('FileUpdater class', function () {
         it('Test 007 : should copy when a file exists at source and target and forcing update', function () {
             const updated = FileUpdater.updatePathWithStats(
                 testSourceFile, mockFileStats(now), testTargetFile, mockFileStats(now),
-                { all: true });
+                {all: true});
             expect(updated).toBe(true);
             expect(mockFs.cpPaths.length).toBe(1);
             expect(mockFs.rmPaths.length).toBe(0);
@@ -234,10 +235,10 @@ describe('FileUpdater class', function () {
         });
 
         it('Test 008 : should copy when a file exists at source and target and target is newer ' +
-                'and forcing update', function () {
+            'and forcing update', function () {
             const updated = FileUpdater.updatePathWithStats(
                 testSourceFile, mockFileStats(oneHourAgo), testTargetFile, mockFileStats(now),
-                { all: true });
+                {all: true});
             expect(updated).toBe(true);
             expect(mockFs.cpPaths.length).toBe(1);
             expect(mockFs.rmPaths.length).toBe(0);
@@ -295,7 +296,7 @@ describe('FileUpdater class', function () {
         it('Test 014 : should join the paths when a rootDir is specified', function () {
             FileUpdater.updatePathWithStats(
                 testSourceFile, mockFileStats(now), testTargetFile, null,
-                { rootDir: testRootDir });
+                {rootDir: testRootDir});
             expect(mockFs.cpPaths.length).toBe(1);
             expect(mockFs.rmPaths.length).toBe(0);
             expect(mockFs.cpPaths[0]).toEqual(
@@ -307,7 +308,7 @@ describe('FileUpdater class', function () {
             let loggedTarget = 0;
             let loggedRoot = 0;
             FileUpdater.updatePathWithStats(
-                testSourceDir, mockDirStats(), testTargetDir, null, { rootDir: testRootDir },
+                testSourceDir, mockDirStats(), testTargetDir, null, {rootDir: testRootDir},
                 function (message) {
                     loggedSource += new RegExp(testSourceDir).test(message) ? 1 : 0;
                     loggedTarget += new RegExp(testTargetDir).test(message) ? 1 : 0;
@@ -323,7 +324,7 @@ describe('FileUpdater class', function () {
             let loggedTarget = 0;
             let loggedRoot = 0;
             FileUpdater.updatePathWithStats(
-                testSourceDir, null, testTargetDir, mockDirStats(), { rootDir: testRootDir },
+                testSourceDir, null, testTargetDir, mockDirStats(), {rootDir: testRootDir},
                 function (message) {
                     loggedSource += new RegExp(testSourceDir).test(message) ? 1 : 0;
                     loggedTarget += new RegExp(testTargetDir).test(message) ? 1 : 0;
@@ -339,7 +340,7 @@ describe('FileUpdater class', function () {
             let loggedTarget = 0;
             let loggedRoot = 0;
             FileUpdater.updatePathWithStats(
-                testSourceFile, mockFileStats(now), testTargetFile, null, { rootDir: testRootDir },
+                testSourceFile, mockFileStats(now), testTargetFile, null, {rootDir: testRootDir},
                 function (message) {
                     loggedSource += new RegExp(testSourceFile).test(message) ? 1 : 0;
                     loggedTarget += new RegExp(testTargetFile).test(message) ? 1 : 0;
@@ -356,7 +357,7 @@ describe('FileUpdater class', function () {
             let loggedRoot = 0;
             const messages = [];
             FileUpdater.updatePathWithStats(
-                testSourceFile, null, testTargetFile, mockFileStats(now), { rootDir: testRootDir },
+                testSourceFile, null, testTargetFile, mockFileStats(now), {rootDir: testRootDir},
                 function (message) {
                     loggedSource += new RegExp(testSourceFile).test(message) ? 1 : 0;
                     loggedTarget += new RegExp(testTargetFile).test(message) ? 1 : 0;
@@ -500,12 +501,12 @@ describe('FileUpdater class', function () {
         it('Test 027 : should prepend the target directory on target paths', function () {
             const mergedPathMap = FileUpdater.mergePathMaps(
                 [{
-                    '': { subDir: testSourceDir, stats: testDirStats },
-                    testTargetFile: { subDir: testSourceDir, stats: testSourceFileStats }
+                    '': {subDir: testSourceDir, stats: testDirStats},
+                    testTargetFile: {subDir: testSourceDir, stats: testSourceFileStats}
                 }],
                 {
-                    '': { subDir: testTargetDir, stats: testDirStats },
-                    testTargetFile: { subDir: testTargetDir, stats: testTargetFileStats }
+                    '': {subDir: testTargetDir, stats: testDirStats},
+                    testTargetFile: {subDir: testTargetDir, stats: testTargetFileStats}
                 },
                 testTargetDir);
             expect(Object.keys(mergedPathMap).sort()).toEqual(['', testTargetFile]);
@@ -525,7 +526,7 @@ describe('FileUpdater class', function () {
             const mergedPathMap = FileUpdater.mergePathMaps(
                 [{}],
                 {
-                    testTargetFile: { subDir: testTargetDir, stats: testTargetFileStats }
+                    testTargetFile: {subDir: testTargetDir, stats: testTargetFileStats}
                 },
                 testTargetDir);
             expect(Object.keys(mergedPathMap).sort()).toEqual([testTargetFile]);
@@ -539,7 +540,7 @@ describe('FileUpdater class', function () {
         it('Tets 029 : should handle missing target files', function () {
             const mergedPathMap = FileUpdater.mergePathMaps(
                 [{
-                    testTargetFile: { subDir: testSourceDir, stats: testSourceFileStats }
+                    testTargetFile: {subDir: testSourceDir, stats: testSourceFileStats}
                 }],
                 {},
                 testTargetDir);
@@ -556,22 +557,22 @@ describe('FileUpdater class', function () {
             const mergedPathMap = FileUpdater.mergePathMaps(
                 [
                     {
-                        '': { subDir: testSourceDir, stats: testDirStats },
-                        testTargetFile: { subDir: testSourceDir, stats: testSourceFileStats }
+                        '': {subDir: testSourceDir, stats: testDirStats},
+                        testTargetFile: {subDir: testSourceDir, stats: testSourceFileStats}
                     },
                     {
-                        '': { subDir: testSourceDir2, stats: testDirStats },
-                        testTargetFile: { subDir: testSourceDir2, stats: testSourceFileStats2 },
-                        testTargetFile2: { subDir: testSourceDir2, stats: testSourceFileStats2 }
+                        '': {subDir: testSourceDir2, stats: testDirStats},
+                        testTargetFile: {subDir: testSourceDir2, stats: testSourceFileStats2},
+                        testTargetFile2: {subDir: testSourceDir2, stats: testSourceFileStats2}
                     },
                     {
-                        '': { subDir: testSourceDir3, stats: testDirStats },
-                        testTargetFile2: { subDir: testSourceDir3, stats: testSourceFileStats3 }
+                        '': {subDir: testSourceDir3, stats: testDirStats},
+                        testTargetFile2: {subDir: testSourceDir3, stats: testSourceFileStats3}
                     }
                 ],
                 {
-                    '': { subDir: testTargetDir, stats: testDirStats },
-                    testTargetFile: { subDir: testTargetDir, stats: testTargetFileStats }
+                    '': {subDir: testTargetDir, stats: testDirStats},
+                    testTargetFile: {subDir: testTargetDir, stats: testTargetFileStats}
                 },
                 testTargetDir);
             expect(Object.keys(mergedPathMap).sort()).toEqual(
@@ -601,7 +602,7 @@ describe('FileUpdater class', function () {
             mockFs.statMap[path.join(testRootDir, testTargetFile)] = testFileStats;
             mockFs.statMap[path.join(testRootDir, testSourceFile)] = testFileStats2;
             const updated = FileUpdater.updatePath(
-                testSourceFile, testTargetFile, { rootDir: testRootDir, all: true });
+                testSourceFile, testTargetFile, {rootDir: testRootDir, all: true});
             expect(updated).toBe(true);
             expect(FileUpdater.updatePathWithStatsCalls.length).toBe(1);
             expect(FileUpdater.updatePathWithStatsCalls[0][0]).toBe(testSourceFile);
@@ -609,7 +610,7 @@ describe('FileUpdater class', function () {
             expect(FileUpdater.updatePathWithStatsCalls[0][2]).toBe(testTargetFile);
             expect(FileUpdater.updatePathWithStatsCalls[0][3]).toEqual(testFileStats);
             expect(FileUpdater.updatePathWithStatsCalls[0][4]).toEqual(
-                { rootDir: testRootDir, all: true });
+                {rootDir: testRootDir, all: true});
         });
 
         it('Test 032 : should update a path without a separate root directory', function () {
@@ -679,7 +680,7 @@ describe('FileUpdater class', function () {
             expect(updated).toBe(true);
             expect(FileUpdater.updatePathWithStatsCalls.length).toBe(4);
 
-            function validateUpdatePathWithStatsCall (
+            function validateUpdatePathWithStatsCall(
                 index, subPath, sourceDir, sourceStats, targetDir, targetStats) {
                 const args = FileUpdater.updatePathWithStatsCalls[index];
                 expect(args[0]).toBe(path.join(sourceDir, subPath));
@@ -750,11 +751,11 @@ describe('FileUpdater class', function () {
                 testFileStats3;
 
             const updated = FileUpdater.mergeAndUpdateDir(
-                [testSourceDir, testSourceDir2], testTargetDir, { rootDir });
+                [testSourceDir, testSourceDir2], testTargetDir, {rootDir});
             expect(updated).toBe(true);
             expect(FileUpdater.updatePathWithStatsCalls.length).toBe(4);
 
-            function validateUpdatePathWithStatsCall (
+            function validateUpdatePathWithStatsCall(
                 index, subPath, sourceDir, sourceStats, targetDir, targetStats) {
                 const args = FileUpdater.updatePathWithStatsCalls[index];
                 expect(args[0]).toBe(path.join(sourceDir, subPath));

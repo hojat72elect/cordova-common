@@ -1,21 +1,21 @@
 /**
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
-*/
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ */
 
 const path = require('path');
 const et = require('elementtree');
@@ -141,7 +141,7 @@ describe('xml-helpers', function () {
 
         it('Test 013 : should restore attributes at the specified selector', function () {
             const xml = {
-                oldAttrib: { 'android:icon': '@drawable/icon', 'android:label': '@string/app_name', 'android:debuggable': 'false' }
+                oldAttrib: {'android:icon': '@drawable/icon', 'android:label': '@string/app_name', 'android:debuggable': 'false'}
             };
             xml_helpers.pruneXMLRestore(android_manifest_xml, 'application', xml);
             const applicationAttr = android_manifest_xml.find('application').attrib;
@@ -151,7 +151,7 @@ describe('xml-helpers', function () {
 
         it('Test 014 : should do nothing if the old attributes cannot be found', function () {
             const xml = {
-                notOldAttrib: { 'android:icon': '@drawable/icon', 'android:label': '@string/app_name', 'android:debuggable': 'false' }
+                notOldAttrib: {'android:icon': '@drawable/icon', 'android:label': '@string/app_name', 'android:debuggable': 'false'}
             };
             xml_helpers.pruneXMLRestore(android_manifest_xml, 'application', xml);
             const applicationAttr = android_manifest_xml.find('application').attrib;
@@ -161,7 +161,7 @@ describe('xml-helpers', function () {
 
         it('Test 015 : should be able to handle absolute selectors', function () {
             const xml = {
-                oldAttrib: { 'android:icon': '@drawable/icon', 'android:label': '@string/app_name', 'android:debuggable': 'false' }
+                oldAttrib: {'android:icon': '@drawable/icon', 'android:label': '@string/app_name', 'android:debuggable': 'false'}
             };
             xml_helpers.pruneXMLRestore(android_manifest_xml, '/manifest/application', xml);
             const applicationAttr = android_manifest_xml.find('application').attrib;
@@ -171,7 +171,7 @@ describe('xml-helpers', function () {
 
         it('Test 016 : should be able to handle absolute selectors with wildcards', function () {
             const xml = {
-                oldAttrib: { 'android:name': 'ChildApp', 'android:label': '@string/app_name', 'android:configChanges': 'orientation|keyboardHidden', 'android:enabled': 'true' }
+                oldAttrib: {'android:name': 'ChildApp', 'android:label': '@string/app_name', 'android:configChanges': 'orientation|keyboardHidden', 'android:enabled': 'true'}
             };
             xml_helpers.pruneXMLRestore(android_manifest_xml, '/*/*/activity', xml);
             const activityAttr = android_manifest_xml.find('application/activity').attrib;
@@ -181,7 +181,7 @@ describe('xml-helpers', function () {
 
         it('Test 017 : should be able to handle xpath selectors', function () {
             const xml = {
-                oldAttrib: { 'android:name': 'com.phonegap.DroidGap', 'android:label': '@string/app_name', 'android:configChanges': 'orientation|keyboardHidden', 'android:enabled': 'true' }
+                oldAttrib: {'android:name': 'com.phonegap.DroidGap', 'android:label': '@string/app_name', 'android:configChanges': 'orientation|keyboardHidden', 'android:enabled': 'true'}
             };
             xml_helpers.pruneXMLRestore(android_manifest_xml, 'application/activity[@android:name="com.phonegap.DroidGap"]', xml);
             const activityAttr = android_manifest_xml.find('application/activity[@android:name="com.phonegap.DroidGap"]').attrib;

@@ -1,7 +1,7 @@
 {
-    "spec_dir": "spec",
-    "helpers": [
-        "helper.js"
-    ],
-    "random": false
+  "spec_dir": "spec",
+  "helpers": [
+    "helper.js"
+  ],
+  "random": false
 }

@@ -1,21 +1,21 @@
 /**
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
-*/
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ */
 
 const path = require('node:path');
 const fs = require('node:fs');
@@ -151,7 +151,9 @@ describe('config.xml parser', function () {
                 expect(cfg.getPlatformPreference('orientation', 'android')).toEqual('foobar');
             });
             it('should throw when setting a preference for unsupported platform', function () {
-                expect(function () { cfg.setPlatformPreference('orientation', 'foobar', 'landscape'); }).toThrow();
+                expect(function () {
+                    cfg.setPlatformPreference('orientation', 'foobar', 'landscape');
+                }).toThrow();
             });
         });
         describe('plugin', function () {
@@ -201,7 +203,7 @@ describe('config.xml parser', function () {
                 expect(plugin.variables.var).toEqual('varvalue');
             });
             it('Test 025 : should allow adding a new plugin', function () {
-                cfg.addPlugin({ name: 'myplugin' });
+                cfg.addPlugin({name: 'myplugin'});
                 const plugins = cfg.doc.findall('plugin');
                 const pluginNames = plugins.map(function (plugin) {
                     return plugin.attrib.name;
@@ -209,9 +211,9 @@ describe('config.xml parser', function () {
                 expect(pluginNames).toContain('myplugin');
             });
             it('Test 026 : should allow adding features with params', function () {
-                cfg.addPlugin({ name: 'aplugin' }, [{ name: 'paraname', value: 'paravalue' }]);
+                cfg.addPlugin({name: 'aplugin'}, [{name: 'paraname', value: 'paravalue'}]);
                 // Additional check for new parameters syntax
-                cfg.addPlugin({ name: 'bplugin' }, { paraname: 'paravalue' });
+                cfg.addPlugin({name: 'bplugin'}, {paraname: 'paravalue'});
                 const plugins = cfg.doc.findall('plugin')
                     .filter(function (plugin) {
                         return plugin.attrib.name === 'aplugin' || plugin.attrib.name === 'bplugin';
@@ -281,11 +283,21 @@ describe('config.xml parser', function () {
             });
         });
         describe('static resources', function () {
-            const hasPlatformPropertyDefined = function (e) { return !!e.platform; };
-            const hasSrcPropertyDefined = function (e) { return !!e.src; };
-            const hasTargetPropertyDefined = function (e) { return !!e.target; };
-            const hasDensityPropertyDefined = function (e) { return !!e.density; };
-            const hasPlatformPropertyUndefined = function (e) { return !e.platform; };
+            const hasPlatformPropertyDefined = function (e) {
+                return !!e.platform;
+            };
+            const hasSrcPropertyDefined = function (e) {
+                return !!e.src;
+            };
+            const hasTargetPropertyDefined = function (e) {
+                return !!e.target;
+            };
+            const hasDensityPropertyDefined = function (e) {
+                return !!e.density;
+            };
+            const hasPlatformPropertyUndefined = function (e) {
+                return !e.platform;
+            };
 
             it('Test 035 : should fetch shared resources if platform parameter is not specified', function () {
                 expect(cfg.getStaticResources(null, 'icon').length).toBe(2);
@@ -337,9 +349,15 @@ describe('config.xml parser', function () {
         });
 
         describe('file resources', function () {
-            const hasSrcPropertyDefined = function (e) { return !!e.src; };
-            const hasTargetPropertyDefined = function (e) { return !!e.target; };
-            const hasArchPropertyDefined = function (e) { return !!e.arch; };
+            const hasSrcPropertyDefined = function (e) {
+                return !!e.src;
+            };
+            const hasTargetPropertyDefined = function (e) {
+                return !!e.target;
+            };
+            const hasArchPropertyDefined = function (e) {
+                return !!e.arch;
+            };
 
             it('should fetch platform-specific resources', function () {
                 expect(cfg.getFileResources('android').length).toBe(2);

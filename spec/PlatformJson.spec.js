@@ -1,21 +1,21 @@
 /**
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
-*/
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ */
 
 const fs = require('node:fs');
 const PlatformJson = require('../src/PlatformJson');
@@ -24,8 +24,8 @@ const ModuleMetadata = PlatformJson.ModuleMetadata;
 const FAKE_MODULE = {
     name: 'fakeModule',
     src: 'www/fakeModule.js',
-    clobbers: [{ target: 'window.fakeClobber' }],
-    merges: [{ target: 'window.fakeMerge' }],
+    clobbers: [{target: 'window.fakeClobber'}],
+    merges: [{target: 'window.fakeMerge'}],
     runs: true
 };
 
@@ -90,11 +90,17 @@ describe('PlatformJson class', function () {
                     'plugins/otherPlugin/www/module1.js'
                 ];
 
-                platformJson.root.modules = pluginPaths.map(function (p) { return { file: p }; });
+                platformJson.root.modules = pluginPaths.map(function (p) {
+                    return {file: p};
+                });
                 platformJson.removePluginMetadata(fakePlugin);
                 const resultantPaths = platformJson.root.modules
-                    .map(function (p) { return p.file; })
-                    .filter(function (f) { return /fakeModule\.js$/.test(f); });
+                    .map(function (p) {
+                        return p.file;
+                    })
+                    .filter(function (f) {
+                        return /fakeModule\.js$/.test(f);
+                    });
 
                 expect(resultantPaths.length).toBe(0);
             });
@@ -107,15 +113,15 @@ describe('PlatformJson class', function () {
             });
         });
 
-        function evaluateCordovaDefineStatement (str) {
+        function evaluateCordovaDefineStatement(str) {
             expect(typeof str).toBe('string');
             const fnString = str.replace(/^\s*cordova\.define\('cordova\/plugin_list',\s*([\s\S]+)\);\s*$/, '($1)');
-            const mod = { exports: {} };
+            const mod = {exports: {}};
             global.eval(fnString)(null, mod.exports, mod); // eslint-disable-line no-eval
             return mod;
         }
 
-        function expectedMetadata () {
+        function expectedMetadata() {
             // Create plain objects from ModuleMetadata instances
             const modules = platformJson.root.modules.map(o => Object.assign({}, o));
             modules.metadata = platformJson.root.plugin_metadata;
@@ -152,7 +158,7 @@ describe('ModuleMetadata class', function () {
     it('Test 010 : should be constructable', function () {
         let meta;
         expect(function () {
-            meta = new ModuleMetadata('fakePlugin', { src: 'www/fakeModule.js' });
+            meta = new ModuleMetadata('fakePlugin', {src: 'www/fakeModule.js'});
         }).not.toThrow();
         expect(meta instanceof ModuleMetadata).toBeTruthy();
     });
@@ -164,26 +170,26 @@ describe('ModuleMetadata class', function () {
     });
 
     it('Test 012 : should guess module id either from name property of from module src', function () {
-        expect(new ModuleMetadata('fakePlugin', { name: 'fakeModule' }).id).toMatch(/fakeModule$/);
-        expect(new ModuleMetadata('fakePlugin', { src: 'www/fakeModule.js' }).id).toMatch(/fakeModule$/);
+        expect(new ModuleMetadata('fakePlugin', {name: 'fakeModule'}).id).toMatch(/fakeModule$/);
+        expect(new ModuleMetadata('fakePlugin', {src: 'www/fakeModule.js'}).id).toMatch(/fakeModule$/);
     });
 
     it('Test 013 : should read "clobbers" property from module', function () {
-        expect(new ModuleMetadata('fakePlugin', { name: 'fakeModule' }).clobbers).not.toBeDefined();
+        expect(new ModuleMetadata('fakePlugin', {name: 'fakeModule'}).clobbers).not.toBeDefined();
         const metadata = new ModuleMetadata('fakePlugin', FAKE_MODULE);
         expect(metadata.clobbers).toEqual(jasmine.any(Array));
         expect(metadata.clobbers[0]).toBe(FAKE_MODULE.clobbers[0].target);
     });
 
     it('Test 014 : should read "merges" property from module', function () {
-        expect(new ModuleMetadata('fakePlugin', { name: 'fakeModule' }).merges).not.toBeDefined();
+        expect(new ModuleMetadata('fakePlugin', {name: 'fakeModule'}).merges).not.toBeDefined();
         const metadata = new ModuleMetadata('fakePlugin', FAKE_MODULE);
         expect(metadata.merges).toEqual(jasmine.any(Array));
         expect(metadata.merges[0]).toBe(FAKE_MODULE.merges[0].target);
     });
 
     it('Test 015 : should read "runs" property from module', function () {
-        expect(new ModuleMetadata('fakePlugin', { name: 'fakeModule' }).runs).not.toBeDefined();
+        expect(new ModuleMetadata('fakePlugin', {name: 'fakeModule'}).runs).not.toBeDefined();
         expect(new ModuleMetadata('fakePlugin', FAKE_MODULE).runs).toBe(true);
     });
 });

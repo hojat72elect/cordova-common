@@ -1,21 +1,21 @@
 /**
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
-*/
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ */
 const path = require('path');
 const ActionStack = require('../src/ActionStack');
 const android_one_project = path.join(__dirname, '..', 'projects', 'android_one');
@@ -33,9 +33,12 @@ describe('action-stack', function () {
             const second_args = [2];
             const third_spy = jasmine.createSpy();
             const third_args = [3];
-            stack.push(stack.createAction(first_spy, first_args, function () {}, []));
-            stack.push(stack.createAction(second_spy, second_args, function () {}, []));
-            stack.push(stack.createAction(third_spy, third_args, function () {}, []));
+            stack.push(stack.createAction(first_spy, first_args, function () {
+            }, []));
+            stack.push(stack.createAction(second_spy, second_args, function () {
+            }, []));
+            stack.push(stack.createAction(third_spy, third_args, function () {
+            }, []));
             stack.process('android', android_one_project);
             expect(first_spy).toHaveBeenCalledWith(first_args[0]);
             expect(second_spy).toHaveBeenCalledWith(second_args[0]);
@@ -55,8 +58,10 @@ describe('action-stack', function () {
             const third_spy = jasmine.createSpy();
             const third_args = [3];
             stack.push(stack.createAction(first_spy, first_args, first_reverter, first_reverter_args));
-            stack.push(stack.createAction(second_spy, second_args, function () {}, []));
-            stack.push(stack.createAction(third_spy, third_args, function () {}, []));
+            stack.push(stack.createAction(second_spy, second_args, function () {
+            }, []));
+            stack.push(stack.createAction(third_spy, third_args, function () {
+            }, []));
 
             // process should throw
             return stack.process('android', android_one_project)
